@@ -302,7 +302,7 @@ function applyForm(kind, id, values) {
     setData({ ...data, tasks });
   }
   if (kind === 'member') {
-    const entry = { id: id || newId('m', data.members), name: values.name, role: values.role, color: values.color };
+    const entry = { id: id || newId('m', data.members), name: values.name, role: values.role, color: safeColor(values.color) };
     const members = id
       ? data.members.map((m) => (m.id === id ? entry : m))
       : [...data.members, entry];
@@ -375,10 +375,14 @@ function handleImport(file) {
   reader.onload = () => {
     try {
       const json = JSON.parse(String(reader.result));
-      if (!Array.isArray(json.projects) || !Array.isArray(json.tasks) || !Array.isArray(json.members)) {
+      if (!isValidData(json)) {
         throw new Error('形式が不正です');
       }
-      setData(json);
+      const sanitized = {
+        ...json,
+        members: json.members.map((m) => ({ ...m, color: safeColor(m.color) }))
+      };
+      setData(sanitized);
       showToast('JSONを読み込みました。「GitHubに保存」で反映されます。', 'success');
     } catch (error) {
       showToast(`読み込み失敗：${error.message}`, 'error');

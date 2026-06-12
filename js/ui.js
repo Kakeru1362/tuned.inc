@@ -35,10 +35,14 @@ function priorityMark(priority) {
   return `<span class="prio ${map[priority] || ''}">${escapeHtml(priority)}</span>`;
 }
 
+function safeColor(color) {
+  return /^#[0-9a-fA-F]{3,8}$/.test(String(color || '')) ? color : '#8a8474';
+}
+
 function avatarHtml(member, size = '') {
   if (!member) return `<span class="avatar avatar--empty ${size}">？</span>`;
   const initial = member.name.trim().charAt(0);
-  return `<span class="avatar ${size}" style="--av:${member.color}" title="${escapeHtml(member.name)}">${escapeHtml(initial)}</span>`;
+  return `<span class="avatar ${size}" style="--av:${safeColor(member.color)}" title="${escapeHtml(member.name)}">${escapeHtml(initial)}</span>`;
 }
 
 function dueLabel(task) {

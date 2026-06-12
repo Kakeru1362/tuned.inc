@@ -20,10 +20,21 @@ async function fetchDataFromSite() {
   return res.json();
 }
 
+function isValidData(data) {
+  return Boolean(data)
+    && Array.isArray(data.projects)
+    && Array.isArray(data.tasks)
+    && Array.isArray(data.members);
+}
+
 // GitHub API（即時反映）を優先し、失敗時は同梱の data.json にフォールバック
 async function loadData() {
   try {
-    return await fetchDataFromApi();
+    const data = await fetchDataFromApi();
+    if (!isValidData(data)) {
+      throw new Error('unexpected data shape');
+    }
+    return data;
   } catch (apiError) {
     return fetchDataFromSite();
   }
