@@ -6,36 +6,6 @@ const adminState = {
   dirty: false
 };
 
-/* ---------- 認証ゲート ---------- */
-
-async function sha256Hex(text) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
-}
-
-function openGate() {
-  document.getElementById('gate').style.display = 'none';
-}
-
-function setupGate() {
-  if (sessionStorage.getItem(CONFIG.storageKeys.authed) === '1') {
-    openGate();
-    return;
-  }
-  document.getElementById('gateForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const input = document.getElementById('gatePass').value;
-    const hash = await sha256Hex(input);
-    if (hash === CONFIG.adminPassHash) {
-      sessionStorage.setItem(CONFIG.storageKeys.authed, '1');
-      openGate();
-    } else {
-      document.getElementById('gateError').textContent = 'パスコードが違います';
-      document.getElementById('gatePass').value = '';
-    }
-  });
-}
-
 /* ---------- 状態更新 ---------- */
 
 function setData(next, markDirty = true) {
@@ -115,7 +85,10 @@ function renderTaskTab(data) {
   return `
     <div class="edit-head">
       <span class="hint">タスクの追加・編集・削除。期限順に表示しています。</span>
-      <button class="btn btn--primary btn--sm" data-add="task">＋ タスクを追加</button>
+      <span>
+        <button class="btn btn--sm" data-add="template">テンプレートから選んで追加</button>
+        <button class="btn btn--primary btn--sm" data-add="task">＋ タスクを追加</button>
+      </span>
     </div>
     <table class="edit-table">
       <thead><tr><th>優先</th><th>タスク</th><th>案件</th><th>担当</th><th>期限</th><th>状態</th><th></th></tr></thead>
@@ -227,6 +200,104 @@ function memberForm(member) {
         <button type="submit" class="btn btn--primary">保存</button>
       </div>
     </form>`);
+}
+
+/* ---------- タスクテンプレート ---------- */
+
+function ymdString(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
+function addDays(ymd, days) {
+  const d = toDate(ymd);
+  const next = new Date(d.getFullYear(), d.getMonth(), d.getDate() + days);
+  return ymdString(next);
+}
+
+function templateChecklistHtml(catIndex, baseYmd) {
+  const cat = TASK_TEMPLATES[catIndex];
+  return cat.tasks.map((t, i) => `
+    <label class="tpl-item">
+      <input type="checkbox" name="tplTask" value="${i}" checked>
+      <span class="tpl-title">${escapeHtml(t.title)}</span>
+      <span class="tpl-due">期限 ${formatDate(addDays(baseYmd, t.offset))}</span>
+      ${priorityMark(t.priority)}
+    </label>`).join('');
+}
+
+function templateForm() {
+  if (adminState.data.projects.length === 0) {
+    showToast('先に案件を追加してください', 'error');
+    return;
+  }
+  const base = ymdString(new Date());
+  const projectOpts = adminState.data.projects
+    .filter((p) => p.status !== '完了')
+    .map((p) => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)}</option>`).join('');
+  const memberOpts = adminState.data.members
+    .map((m) => `<option value="${escapeHtml(m.id)}">${escapeHtml(m.name)}</option>`).join('');
+  const catOpts = TASK_TEMPLATES
+    .map((c, i) => `<option value="${i}">${escapeHtml(c.category)}</option>`).join('');
+  openModal(`
+    <h3>テンプレートからタスクを追加</h3>
+    <form id="modalForm" data-kind="template">
+      <div class="field-row">
+        <div class="field"><label>追加先の案件 *</label><select name="projectId" required>${projectOpts}</select></div>
+        <div class="field"><label>担当（まとめて設定）</label><select name="assigneeId"><option value="">未割当</option>${memberOpts}</select></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>仕事の種類</label><select name="catIndex" id="tplCat">${catOpts}</select></div>
+        <div class="field"><label>開始日（期限を自動計算）</label><input type="date" name="base" id="tplBase" value="${base}"></div>
+      </div>
+      <div class="field">
+        <label>追加するタスク（チェックを外すと追加されません）</label>
+        <div class="tpl-list" id="tplList">${templateChecklistHtml(0, base)}</div>
+        <p class="note">期限は開始日からの目安で自動設定されます。追加後に個別に編集できます。</p>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn--ghost" id="tplToggle">全選択／解除</button>
+        <button type="button" class="btn btn--ghost" data-close>キャンセル</button>
+        <button type="submit" class="btn btn--primary">選んだタスクを追加</button>
+      </div>
+    </form>`);
+  const refreshList = () => {
+    const catIndex = Number(document.getElementById('tplCat').value);
+    const baseYmd = document.getElementById('tplBase').value || base;
+    document.getElementById('tplList').innerHTML = templateChecklistHtml(catIndex, baseYmd);
+  };
+  document.getElementById('tplCat').addEventListener('change', refreshList);
+  document.getElementById('tplBase').addEventListener('change', refreshList);
+  document.getElementById('tplToggle').addEventListener('click', () => {
+    const boxes = [...document.querySelectorAll('#tplList input[name="tplTask"]')];
+    const allChecked = boxes.every((b) => b.checked);
+    boxes.forEach((b) => { b.checked = !allChecked; });
+  });
+}
+
+function applyTemplateForm(form) {
+  const projectId = form.projectId.value;
+  const assigneeId = form.assigneeId.value;
+  const baseYmd = form.base.value || ymdString(new Date());
+  const cat = TASK_TEMPLATES[Number(form.catIndex.value)];
+  const indices = [...form.querySelectorAll('input[name="tplTask"]:checked')].map((c) => Number(c.value));
+  if (indices.length === 0) {
+    showToast('タスクが1つも選ばれていません', 'error');
+    return;
+  }
+  const data = adminState.data;
+  const nums = data.tasks.map((t) => parseInt(String(t.id).replace(/\D/g, ''), 10) || 0);
+  const startNum = Math.max(0, ...nums) + 1;
+  const newTasks = indices.map((idx, i) => ({
+    id: `t${startNum + i}`,
+    projectId,
+    title: cat.tasks[idx].title,
+    assigneeId,
+    due: addDays(baseYmd, cat.tasks[idx].offset),
+    status: '未着手',
+    priority: cat.tasks[idx].priority
+  }));
+  setData({ ...data, tasks: [...data.tasks, ...newTasks] });
+  showToast(`${newTasks.length}件のタスクを追加しました`, 'success');
 }
 
 function tokenForm() {
@@ -409,6 +480,7 @@ function bindAdminEvents() {
     if (btn.dataset.add === 'project') projectForm(null);
     if (btn.dataset.add === 'task') taskForm(null);
     if (btn.dataset.add === 'member') memberForm(null);
+    if (btn.dataset.add === 'template') templateForm();
     if (btn.dataset.editProject) projectForm(projectById(adminState.data, btn.dataset.editProject));
     if (btn.dataset.editTask) taskForm(adminState.data.tasks.find((t) => t.id === btn.dataset.editTask));
     if (btn.dataset.editMember) memberForm(memberById(adminState.data, btn.dataset.editMember));
@@ -428,7 +500,11 @@ function bindAdminEvents() {
     const form = e.target.closest('#modalForm');
     if (!form) return;
     e.preventDefault();
-    applyForm(form.dataset.kind, form.dataset.id, readForm(form));
+    if (form.dataset.kind === 'template') {
+      applyTemplateForm(form);
+    } else {
+      applyForm(form.dataset.kind, form.dataset.id, readForm(form));
+    }
     closeModal();
   });
 
@@ -449,7 +525,6 @@ function bindAdminEvents() {
 /* ---------- 初期化 ---------- */
 
 async function initAdmin() {
-  setupGate();
   bindAdminEvents();
   try {
     const remote = await loadData();

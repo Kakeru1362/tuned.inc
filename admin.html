@@ -13,31 +13,19 @@
 </head>
 <body class="admin-body">
 
-  <!-- パスコードゲート -->
-  <div class="gate" id="gate">
-    <div class="gate-box">
-      <div class="seal">綴</div>
-      <h1>管理コンソール</h1>
-      <p>TUNDE INC. — ADMIN CONSOLE</p>
-      <form id="gateForm">
-        <input type="password" id="gatePass" placeholder="パスコード" autocomplete="off" autofocus>
-        <button type="submit">入 室</button>
-      </form>
-      <div class="gate-error" id="gateError"></div>
-      <a class="back" href="index.html">← 閲覧画面へ戻る</a>
-    </div>
-  </div>
-
   <!-- ヘッダー -->
   <header class="admin-head">
     <span class="mark">TUNDE<em>・</em>INC <span class="sub">ADMIN CONSOLE</span></span>
+    <nav class="mode-tabs">
+      <a class="mode-tab" href="index.html">閲覧ボード</a>
+      <a class="mode-tab on" href="admin.html">管理</a>
+    </nav>
     <span class="dirty-dot" id="dirtyDot">● 未保存の変更あり</span>
     <span class="spacer"></span>
     <button class="btn btn--ghost" id="btnToken">トークン設定</button>
     <button class="btn btn--ghost" id="btnExport">JSON書出</button>
     <button class="btn btn--ghost" id="btnImport">JSON読込</button>
     <input type="file" id="importFile" accept=".json" hidden>
-    <button class="btn" onclick="location.href='index.html'">閲覧画面</button>
     <button class="btn btn--primary" id="btnSave">GitHubに保存</button>
   </header>
 
@@ -62,6 +50,7 @@
   <script src="js/store.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/github.js"></script>
+  <script src="js/templates.js"></script>
   <script src="js/admin.js"></script>
 </body>
 </html>

@@ -26,7 +26,7 @@ function renderProjects(data) {
     const avatars = p.memberIds.map((id) => avatarHtml(memberById(data, id))).join('');
     const cls = p.status === '進行中' ? 'pcard--active' : p.status === '完了' ? 'pcard--done' : '';
     return `
-      <article class="pcard ${cls} rise">
+      <article class="pcard ${cls} rise" data-project="${escapeHtml(p.id)}">
         <div class="pcard-head">
           <div>
             <h3>${escapeHtml(p.name)}</h3>
@@ -49,6 +49,7 @@ function renderProjects(data) {
   return `
     <section class="section" id="projects">
       <h2 class="section-label">案件一覧<span class="en">PROJECTS</span></h2>
+      <p class="grid-hint">カードをクリックすると、その案件のタスクだけを下の一覧に表示します（もう一度クリックで解除）</p>
       <div class="project-grid">${cards || '<div class="empty-note">プロジェクトがありません</div>'}</div>
     </section>`;
 }
@@ -156,12 +157,38 @@ function refreshTaskTable() {
   count.textContent = `${filteredTasks(dashboardState.data).length} 件`;
 }
 
+function setProjectFilter(projectId, scroll) {
+  dashboardState.filters = { ...dashboardState.filters, project: projectId };
+  const select = document.getElementById('fProject');
+  if (select) select.value = projectId;
+  document.querySelectorAll('.pcard').forEach((card) => {
+    card.classList.toggle('pcard--selected', Boolean(projectId) && card.dataset.project === projectId);
+  });
+  refreshTaskTable();
+  if (scroll && projectId) {
+    document.getElementById('tasks').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
 function bindFilters() {
   [['fProject', 'project'], ['fMember', 'member'], ['fStatus', 'status']].forEach(([elId, key]) => {
     const select = document.getElementById(elId);
     select.addEventListener('change', () => {
+      if (key === 'project') {
+        setProjectFilter(select.value, false);
+        return;
+      }
       dashboardState.filters = { ...dashboardState.filters, [key]: select.value };
       refreshTaskTable();
+    });
+  });
+}
+
+function bindProjectCards() {
+  document.querySelectorAll('.pcard[data-project]').forEach((card) => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.project;
+      setProjectFilter(dashboardState.filters.project === id ? '' : id, true);
     });
   });
 }
@@ -185,6 +212,7 @@ async function initDashboard() {
     renderHeader(data);
     app.innerHTML = renderStats(data) + renderProjects(data) + renderDeadlines(data) + renderTasks(data) + renderMembers(data);
     bindFilters();
+    bindProjectCards();
     refreshTaskTable();
   } catch (error) {
     app.innerHTML = '<div class="empty-note">データの読み込みに失敗しました。時間をおいて再読み込みしてください。</div>';
