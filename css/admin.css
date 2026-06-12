@@ -1,0 +1,246 @@
+/* ============================================
+   管理コンソール レイアウト
+   ============================================ */
+
+.admin-body { background: var(--paper); }
+
+/* ---------- パスコードゲート ---------- */
+.gate {
+  position: fixed;
+  inset: 0;
+  background: var(--ink);
+  display: grid;
+  place-items: center;
+  z-index: 500;
+}
+.gate-box {
+  text-align: center;
+  color: var(--paper);
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.gate-box .seal {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 22px;
+  border: 1.5px solid var(--vermillion);
+  color: var(--vermillion);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 28px;
+  border-radius: 5px;
+  transform: rotate(-3deg);
+}
+.gate-box h1 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  letter-spacing: 0.3em;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.gate-box p { font-size: 11px; letter-spacing: 0.24em; color: rgba(245, 241, 232, 0.5); margin-bottom: 30px; }
+.gate-box input {
+  font-family: var(--font-body);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(245, 241, 232, 0.4);
+  color: var(--paper);
+  font-size: 18px;
+  letter-spacing: 0.4em;
+  text-align: center;
+  padding: 8px 4px;
+  width: 240px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.gate-box input:focus { border-bottom-color: var(--vermillion); }
+.gate-box button {
+  display: block;
+  margin: 26px auto 0;
+  background: var(--vermillion);
+  color: var(--paper);
+  border: none;
+  padding: 10px 46px;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  transition: background 0.25s;
+}
+.gate-box button:hover { background: var(--vermillion-deep); }
+.gate-box .gate-error { color: var(--vermillion); font-size: 12px; margin-top: 14px; min-height: 1.5em; letter-spacing: 0.1em; }
+.gate-box .back { display: inline-block; margin-top: 20px; font-size: 11px; color: rgba(245, 241, 232, 0.45); letter-spacing: 0.16em; }
+
+/* ---------- ヘッダー ---------- */
+.admin-head {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 18px 40px;
+  border-bottom: 2px solid var(--ink);
+  background: var(--card);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.admin-head .mark {
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+}
+.admin-head .mark em { font-style: normal; color: var(--vermillion); }
+.admin-head .sub { font-size: 10px; letter-spacing: 0.3em; color: var(--ink-faint); }
+.admin-head .spacer { flex: 1; }
+
+.btn {
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  padding: 9px 22px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  transition: all 0.2s;
+}
+.btn:hover { background: var(--ink); color: var(--paper); }
+.btn--primary { background: var(--vermillion); border-color: var(--vermillion); color: var(--paper); }
+.btn--primary:hover { background: var(--vermillion-deep); border-color: var(--vermillion-deep); }
+.btn--ghost { border-color: var(--hairline-strong); color: var(--ink-soft); }
+.btn--sm { padding: 4px 14px; font-size: 11.5px; }
+.btn--danger { border-color: var(--vermillion); color: var(--vermillion); }
+.btn--danger:hover { background: var(--vermillion); color: var(--paper); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.dirty-dot {
+  font-size: 11.5px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  display: none;
+}
+.dirty-dot.on { display: inline; }
+
+/* ---------- タブ ---------- */
+.admin-main { padding: 34px 40px 100px; max-width: 1280px; margin: 0 auto; }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--hairline-strong); margin-bottom: 26px; }
+.tab {
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  padding: 10px 30px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: none;
+  color: var(--ink-faint);
+  position: relative;
+  top: 1px;
+}
+.tab.on {
+  background: var(--card);
+  border-color: var(--hairline-strong);
+  color: var(--ink);
+  border-top: 2px solid var(--vermillion);
+}
+
+/* ---------- 編集テーブル ---------- */
+.edit-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.edit-head .hint { font-size: 12px; color: var(--ink-faint); }
+
+table.edit-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.edit-table th {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+  text-align: left;
+  color: var(--ink-soft);
+  padding: 10px 14px;
+  background: var(--paper-deep);
+  border-top: 1px solid var(--hairline-strong);
+  border-bottom: 1px solid var(--hairline-strong);
+}
+.edit-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 13px;
+  vertical-align: middle;
+}
+.edit-table .ops { white-space: nowrap; text-align: right; }
+.edit-table .ops button + button { margin-left: 6px; }
+
+/* ---------- モーダル ---------- */
+.modal-wrap {
+  position: fixed;
+  inset: 0;
+  background: rgba(29, 27, 22, 0.55);
+  display: none;
+  place-items: center;
+  z-index: 300;
+  backdrop-filter: blur(2px);
+}
+.modal-wrap.open { display: grid; }
+.modal {
+  background: var(--card);
+  width: 560px;
+  max-height: 86vh;
+  overflow-y: auto;
+  border-top: 3px solid var(--vermillion);
+  box-shadow: 0 24px 60px rgba(29, 27, 22, 0.35);
+  padding: 30px 36px 28px;
+  animation: rise 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.modal h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  letter-spacing: 0.16em;
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--hairline);
+}
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--ink-soft);
+  margin-bottom: 5px;
+}
+.field input[type="text"], .field input[type="date"], .field input[type="password"],
+.field select, .field textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  padding: 9px 12px;
+  border: 1px solid var(--hairline-strong);
+  background: var(--paper);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--vermillion); }
+.field textarea { resize: vertical; min-height: 64px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field .note { font-size: 11px; color: var(--ink-faint); margin-top: 4px; line-height: 1.6; }
+.field input[type="color"] { width: 56px; height: 34px; border: 1px solid var(--hairline-strong); background: var(--paper); padding: 2px; }
+
+.member-checks { display: flex; flex-wrap: wrap; gap: 8px; }
+.member-checks label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  border: 1px solid var(--hairline-strong);
+  padding: 5px 12px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+.member-checks label:has(input:checked) { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.member-checks input { accent-color: var(--vermillion); }
+
+.modal-foot { display: flex; justify-content: flex-end; gap: 10px; margin-top: 26px; }
+
+.token-status { font-size: 12px; letter-spacing: 0.06em; }
+.token-status.ok { color: var(--pine); }
+.token-status.ng { color: var(--vermillion); }

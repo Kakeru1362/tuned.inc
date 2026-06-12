@@ -1,0 +1,79 @@
+{
+  "updatedAt": "2026-06-12T09:00:00+09:00",
+  "members": [
+    { "id": "m1", "name": "山口 翔", "role": "代表 / ディレクター", "color": "#b5452f" },
+    { "id": "m2", "name": "佐藤 美咲", "role": "デザイナー", "color": "#8a6d3b" },
+    { "id": "m3", "name": "田中 健太", "role": "エンジニア", "color": "#3e6257" },
+    { "id": "m4", "name": "鈴木 あゆみ", "role": "マーケター", "color": "#4a5a7a" },
+    { "id": "m5", "name": "高橋 大輔", "role": "営業", "color": "#6b4a6e" }
+  ],
+  "projects": [
+    {
+      "id": "p1",
+      "name": "ECサイトリニューアル",
+      "client": "自社",
+      "status": "進行中",
+      "start": "2026-04-01",
+      "end": "2026-07-31",
+      "memberIds": ["m1", "m2", "m3"],
+      "description": "自社ECのデザイン刷新とカート導線の改善。"
+    },
+    {
+      "id": "p2",
+      "name": "新商品ローンチLP",
+      "client": "株式会社サクラ商事",
+      "status": "進行中",
+      "start": "2026-05-15",
+      "end": "2026-06-30",
+      "memberIds": ["m2", "m4"],
+      "description": "夏季新商品のローンチに合わせたLP制作と広告運用。"
+    },
+    {
+      "id": "p3",
+      "name": "社内業務システム改善",
+      "client": "自社",
+      "status": "計画中",
+      "start": "2026-07-01",
+      "end": "2026-09-30",
+      "memberIds": ["m1", "m3"],
+      "description": "受発注管理の自動化とレポートのダッシュボード化。"
+    },
+    {
+      "id": "p4",
+      "name": "SNS運用代行（6月）",
+      "client": "カフェ・ハナレ",
+      "status": "進行中",
+      "start": "2026-06-01",
+      "end": "2026-06-30",
+      "memberIds": ["m4", "m5"],
+      "description": "Instagram・Xの月間運用と月次レポート。"
+    },
+    {
+      "id": "p5",
+      "name": "コーポレートサイト保守",
+      "client": "株式会社ヤマト工業",
+      "status": "完了",
+      "start": "2026-04-01",
+      "end": "2026-05-31",
+      "memberIds": ["m3"],
+      "description": "サイト保守契約（4-5月期）。更新作業完了。"
+    }
+  ],
+  "tasks": [
+    { "id": "t1", "projectId": "p1", "title": "トップページデザイン最終FIX", "assigneeId": "m2", "due": "2026-06-10", "status": "進行中", "priority": "高" },
+    { "id": "t2", "projectId": "p1", "title": "カート画面の実装", "assigneeId": "m3", "due": "2026-06-20", "status": "進行中", "priority": "高" },
+    { "id": "t3", "projectId": "p1", "title": "商品撮影の手配", "assigneeId": "m1", "due": "2026-06-18", "status": "未着手", "priority": "中" },
+    { "id": "t4", "projectId": "p1", "title": "決済テスト（本番環境）", "assigneeId": "m3", "due": "2026-07-15", "status": "未着手", "priority": "高" },
+    { "id": "t5", "projectId": "p2", "title": "LPファーストビュー制作", "assigneeId": "m2", "due": "2026-06-13", "status": "進行中", "priority": "高" },
+    { "id": "t6", "projectId": "p2", "title": "広告クリエイティブ3案", "assigneeId": "m4", "due": "2026-06-16", "status": "未着手", "priority": "中" },
+    { "id": "t7", "projectId": "p2", "title": "計測タグの設置確認", "assigneeId": "m4", "due": "2026-06-25", "status": "未着手", "priority": "中" },
+    { "id": "t8", "projectId": "p3", "title": "現状業務フローのヒアリング", "assigneeId": "m1", "due": "2026-06-26", "status": "未着手", "priority": "中" },
+    { "id": "t9", "projectId": "p3", "title": "要件定義書ドラフト", "assigneeId": "m3", "due": "2026-07-10", "status": "未着手", "priority": "低" },
+    { "id": "t10", "projectId": "p4", "title": "6月後半の投稿カレンダー作成", "assigneeId": "m4", "due": "2026-06-14", "status": "進行中", "priority": "高" },
+    { "id": "t11", "projectId": "p4", "title": "店舗撮影（新メニュー）", "assigneeId": "m5", "due": "2026-06-09", "status": "未着手", "priority": "中" },
+    { "id": "t12", "projectId": "p4", "title": "5月分レポート提出", "assigneeId": "m4", "due": "2026-06-05", "status": "完了", "priority": "中" },
+    { "id": "t13", "projectId": "p5", "title": "最終報告書の送付", "assigneeId": "m3", "due": "2026-06-02", "status": "完了", "priority": "低" },
+    { "id": "t14", "projectId": "p2", "title": "クライアント中間レビュー", "assigneeId": "m1", "due": "2026-06-19", "status": "未着手", "priority": "高" },
+    { "id": "t15", "projectId": "p4", "title": "インフルエンサー候補リスト", "assigneeId": "m5", "due": "2026-06-22", "status": "未着手", "priority": "低" }
+  ]
+}

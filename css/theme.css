@@ -1,0 +1,170 @@
+/* ============================================
+   TUNDE INC. — 和モダン・エディトリアル テーマ
+   生成り紙 × 墨 × 朱
+   ============================================ */
+
+:root {
+  --paper: #f5f1e8;
+  --paper-deep: #ece6d8;
+  --ink: #1d1b16;
+  --ink-soft: #4a463d;
+  --ink-faint: #8a8474;
+  --vermillion: #c2392a;
+  --vermillion-deep: #9c2b1f;
+  --gold: #8a6d3b;
+  --pine: #3e6257;
+  --hairline: rgba(29, 27, 22, 0.16);
+  --hairline-strong: rgba(29, 27, 22, 0.34);
+  --card: #faf7f0;
+  --shadow: 0 2px 14px rgba(29, 27, 22, 0.07);
+  --font-display: 'Zen Old Mincho', serif;
+  --font-body: 'Zen Kaku Gothic New', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  min-width: 1100px;
+}
+
+/* 紙の質感（ノイズ） */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection { background: var(--vermillion); color: var(--paper); }
+
+a { color: inherit; }
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+/* ---------- バッジ ---------- */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 1px 10px 2px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+.badge--active { color: var(--vermillion); background: rgba(194, 57, 42, 0.06); }
+.badge--plan   { color: var(--gold); background: rgba(138, 109, 59, 0.07); }
+.badge--hold   { color: var(--ink-faint); background: rgba(138, 132, 116, 0.1); }
+.badge--done   { color: var(--pine); background: rgba(62, 98, 87, 0.07); }
+.badge--todo   { color: var(--ink-soft); background: rgba(74, 70, 61, 0.06); }
+
+/* ---------- 優先度 ---------- */
+.prio {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+.prio--high { background: var(--vermillion); color: var(--paper); }
+.prio--mid  { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+.prio--low  { background: transparent; color: var(--ink-faint); border: 1px dashed var(--ink-faint); }
+
+/* ---------- アバター ---------- */
+.avatar {
+  --av: var(--ink-soft);
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--av);
+  color: var(--paper);
+  font-size: 13px;
+  font-weight: 700;
+  border: 2px solid var(--card);
+  flex-shrink: 0;
+}
+.avatar--sm { width: 24px; height: 24px; font-size: 11px; }
+.avatar--empty { background: var(--paper-deep); color: var(--ink-faint); }
+.avatar-stack { display: inline-flex; }
+.avatar-stack .avatar:not(:first-child) { margin-left: -8px; }
+
+/* ---------- 期限表示 ---------- */
+.due { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.due--over  { color: var(--vermillion); font-weight: 700; }
+.due--today { color: var(--vermillion); font-weight: 700; }
+.due--soon  { color: var(--gold); font-weight: 700; }
+.due--done  { color: var(--ink-faint); text-decoration: line-through; }
+
+/* ---------- トースト ---------- */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translate(-50%, 16px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 28px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  border-radius: 3px;
+  opacity: 0;
+  transition: all 0.35s ease;
+  z-index: 2000;
+  box-shadow: 0 8px 30px rgba(29, 27, 22, 0.3);
+}
+.toast--show { opacity: 1; transform: translate(-50%, 0); }
+.toast--error { background: var(--vermillion-deep); }
+.toast--success { background: var(--pine); }
+
+/* ---------- 汎用 ---------- */
+.section-label {
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.28em;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--hairline);
+}
+.section-label .en {
+  font-size: 10px;
+  letter-spacing: 0.34em;
+  color: var(--vermillion);
+  font-family: var(--font-body);
+}
+
+.empty-note {
+  color: var(--ink-faint);
+  font-size: 13px;
+  padding: 24px;
+  text-align: center;
+  border: 1px dashed var(--hairline);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }

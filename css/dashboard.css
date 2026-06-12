@@ -1,0 +1,312 @@
+/* ============================================
+   閲覧ダッシュボード レイアウト
+   ============================================ */
+
+.layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: 100vh;
+}
+
+/* ---------- サイドバー ---------- */
+.side {
+  border-right: 1px solid var(--hairline);
+  padding: 36px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
+}
+
+.brand {
+  writing-mode: vertical-rl;
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: 0.42em;
+  font-weight: 600;
+}
+.brand .dot { color: var(--vermillion); }
+
+.side-seal {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--vermillion);
+  color: var(--vermillion);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 18px;
+  border-radius: 4px;
+  transform: rotate(-3deg);
+}
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  justify-content: center;
+}
+.side-nav a {
+  writing-mode: vertical-rl;
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  color: var(--ink-soft);
+  padding: 8px 4px;
+  border-right: 2px solid transparent;
+  transition: all 0.25s;
+}
+.side-nav a:hover { color: var(--vermillion); border-right-color: var(--vermillion); }
+
+.side-admin {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  color: var(--ink-faint);
+  border: 1px solid var(--hairline-strong);
+  padding: 8px 14px;
+  transition: all 0.25s;
+}
+.side-admin:hover { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+
+/* ---------- メイン ---------- */
+.main { padding: 44px 56px 80px; max-width: 1480px; }
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 36px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--ink);
+}
+.page-head h1 {
+  font-family: var(--font-display);
+  font-size: 34px;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.page-head h1 small {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: var(--vermillion);
+  font-family: var(--font-body);
+  margin-bottom: 6px;
+}
+.page-meta { text-align: right; font-size: 12px; color: var(--ink-faint); line-height: 1.9; }
+.page-meta .today { font-size: 15px; color: var(--ink); font-family: var(--font-display); letter-spacing: 0.1em; }
+
+/* ---------- 統計ストリップ ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--hairline-strong);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  margin-bottom: 52px;
+}
+.stat {
+  padding: 26px 30px 22px;
+  position: relative;
+}
+.stat + .stat { border-left: 1px solid var(--hairline); }
+.stat .num {
+  font-family: var(--font-display);
+  font-size: 52px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.stat .num .unit { font-size: 18px; margin-left: 4px; color: var(--ink-soft); }
+.stat .label {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  color: var(--ink-soft);
+}
+.stat--alert .num { color: var(--vermillion); }
+.stat--alert::after {
+  content: '要対応';
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 10px;
+  color: var(--vermillion);
+  border: 1px solid var(--vermillion);
+  padding: 0 8px;
+  letter-spacing: 0.2em;
+}
+
+/* ---------- セクション ---------- */
+.section { margin-bottom: 56px; }
+
+/* ---------- プロジェクトカード ---------- */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 20px;
+}
+.pcard {
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-top: 3px solid var(--ink);
+  padding: 22px 24px 20px;
+  box-shadow: var(--shadow);
+  transition: transform 0.25s, box-shadow 0.25s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pcard:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(29, 27, 22, 0.12); }
+.pcard--active { border-top-color: var(--vermillion); }
+.pcard--done { opacity: 0.62; }
+.pcard-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.pcard-head h3 { font-family: var(--font-display); font-size: 18px; letter-spacing: 0.06em; line-height: 1.4; }
+.pcard .client { font-size: 11px; color: var(--ink-faint); letter-spacing: 0.1em; }
+.pcard .desc { font-size: 12.5px; color: var(--ink-soft); min-height: 2.6em; }
+.pcard-foot { display: flex; justify-content: space-between; align-items: center; }
+.pcard .term { font-size: 11.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+.progress { display: flex; align-items: center; gap: 10px; }
+.progress-bar {
+  flex: 1;
+  height: 5px;
+  background: var(--paper-deep);
+  position: relative;
+  overflow: hidden;
+}
+.progress-bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--pct, 0%);
+  background: linear-gradient(90deg, var(--ink) 0%, var(--vermillion) 100%);
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.progress .pct {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  min-width: 44px;
+  text-align: right;
+}
+.progress .cnt { font-size: 11px; color: var(--ink-faint); }
+
+/* ---------- 期限ボード ---------- */
+.deadline-list { display: flex; flex-direction: column; }
+.dl-row {
+  display: grid;
+  grid-template-columns: 150px 26px 1fr 200px 160px;
+  align-items: center;
+  gap: 18px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--hairline);
+  background: var(--card);
+  transition: background 0.2s;
+}
+.dl-row:first-child { border-top: 1px solid var(--hairline-strong); }
+.dl-row:hover { background: var(--paper-deep); }
+.dl-row .title { font-size: 14px; }
+.dl-row .proj { font-size: 11.5px; color: var(--ink-faint); letter-spacing: 0.06em; }
+.dl-row .assignee { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+.dl-row--over { border-left: 3px solid var(--vermillion); }
+
+/* ---------- タスク表 ---------- */
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+.filters select {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  padding: 7px 32px 7px 12px;
+  border: 1px solid var(--hairline-strong);
+  background: var(--card);
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6'%3E%3Cpath d='M0 0l4 6 4-6z' fill='%234a463d'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+.filters .count { margin-left: auto; font-size: 12px; color: var(--ink-faint); }
+
+table.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.task-table th {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-align: left;
+  padding: 10px 16px;
+  border-top: 1px solid var(--hairline-strong);
+  border-bottom: 1px solid var(--hairline-strong);
+  background: var(--paper-deep);
+}
+.task-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 13.5px;
+  vertical-align: middle;
+}
+.task-table tr:hover td { background: rgba(236, 230, 216, 0.5); }
+.task-table .t-assignee { display: flex; align-items: center; gap: 8px; }
+.task-table .t-proj { font-size: 12px; color: var(--ink-faint); }
+.task-table tr.is-done td { opacity: 0.55; }
+
+/* ---------- メンバー ---------- */
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+.mcard {
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  box-shadow: var(--shadow);
+}
+.mcard .avatar { width: 46px; height: 46px; font-size: 19px; }
+.mcard .info { flex: 1; min-width: 0; }
+.mcard .name { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.08em; }
+.mcard .role { font-size: 11px; color: var(--ink-faint); letter-spacing: 0.08em; }
+.mcard .load { text-align: right; }
+.mcard .load .n { font-family: var(--font-display); font-size: 26px; line-height: 1; }
+.mcard .load .l { font-size: 10px; color: var(--ink-faint); letter-spacing: 0.14em; }
+.mcard .load .n.has-over { color: var(--vermillion); }
+
+/* ---------- フッター ---------- */
+.foot {
+  margin-top: 70px;
+  padding-top: 18px;
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+}
+
+.loading {
+  padding: 120px;
+  text-align: center;
+  font-family: var(--font-display);
+  letter-spacing: 0.3em;
+  color: var(--ink-faint);
+}

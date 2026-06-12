@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>TUNDE INC. ｜ プロジェクト管理板</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="side">
+      <div class="side-seal">綴</div>
+      <div class="brand">TUNDE<span class="dot">・</span>INC</div>
+      <nav class="side-nav">
+        <a href="#projects">案件</a>
+        <a href="#deadlines">期限</a>
+        <a href="#tasks">作業</a>
+        <a href="#members">人員</a>
+      </nav>
+      <a class="side-admin" href="admin.html">管理画面</a>
+    </aside>
+
+    <main class="main">
+      <header class="page-head rise">
+        <h1><small>PROJECT BOARD</small>プロジェクト管理板</h1>
+        <div class="page-meta">
+          <div class="today" id="todayLabel">—</div>
+          <div id="updatedLabel">データ読込中…</div>
+        </div>
+      </header>
+
+      <div id="app">
+        <div class="loading">読 み 込 み 中 …</div>
+      </div>
+
+      <footer class="foot">
+        <span>TUNDE INC. — INTERNAL USE ONLY</span>
+        <span>閲覧専用 ／ 編集は管理画面から</span>
+      </footer>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
